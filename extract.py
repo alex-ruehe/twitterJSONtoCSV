@@ -1,6 +1,14 @@
 import json, sys, unicodecsv
 
+def find_nth(haystack, needle, n):
+    start = haystack.find(needle)
+    while start >= 0 and n > 1:
+        start = haystack.find(needle, start+len(needle))
+        n -= 1
+    return start
+
 filename = sys.argv[1]
+print filename
 
 input = open(filename)
 input.readline()
@@ -14,6 +22,22 @@ output = unicodecsv.writer(out, encoding='utf-8')
 output.writerow(["id"]+["timestamp"]+["tweet"])  # header row
 
 for row in data:
-	if row["text"].startswith('"') and row["text"].endswith('"'):
-		row["text"] = row["text"][1:-1]
+	
 	output.writerow([row["id"],row["created_at"],row["text"]])
+
+out.close()
+
+source = open(filename[:-2]+"csv","r")
+
+
+
+for line in source:
+	pos = find_nth(line, ",",2)
+	tweet = line[pos+1:-2]
+	tweet = tweet.replace('""','"')
+	if tweet.startswith('"') and tweet.endswith('"'):
+		tweet = tweet[1:-1]
+	print tweet
+	
+
+source.close()
