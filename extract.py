@@ -22,14 +22,13 @@ output = unicodecsv.writer(out, encoding='utf-8')
 output.writerow(["id"]+["timestamp"]+["tweet"])  # header row
 
 for row in data:
-	
 	output.writerow([row["id"],row["created_at"],row["text"]])
-
 out.close()
 
 source = open(filename[:-2]+"csv","r")
+tmp = open(filename[:-2]+"tmp","wb")
 
-
+tmp.write("id,timestamp,tweet")
 
 for line in source:
 	pos = find_nth(line, ",",2)
@@ -37,7 +36,10 @@ for line in source:
 	tweet = tweet.replace('""','"')
 	if tweet.startswith('"') and tweet.endswith('"'):
 		tweet = tweet[1:-1]
-	print tweet
-	
+	line = line[:pos+1] + tweet + "\r\n"
+	tmp.write(line)
+	print line
 
+	
+tmp.close()
 source.close()
