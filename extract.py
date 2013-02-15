@@ -18,31 +18,12 @@ data = json.load(input)
 input.close()
 
 # create a temporary output file 
-out = open(filename[:-2]+"tmp","wb")
+out = open(filename[:-2]+"csv","wb")
 
 output = unicodecsv.writer(out, encoding='utf-8')
 
-output.writerow(["id"]+["timestamp"]+["tweet"])  # header row
+output.writerow(["id"]+["timestamp"]+["tweet"])
 
 for row in data:
 	output.writerow([row["id"],row["created_at"],row["text"].replace("\n"," ")])
 out.close()
-
-source = open(filename[:-2]+"tmp","r")
-csv = open(filename[:-2]+"csv","wb")
-
-for line in source:
-	pos = find_nth(line, ",",2)
-	tweet = line[pos+1:-2]
-	tweet = tweet.replace('""','"')
-	if "\n" in tweet:
-		print tweet
-	if tweet.startswith('"') and tweet.endswith('"'):
-		tweet = tweet[1:-1]
-	line = line[:pos+1] + tweet + "\r\n"
-	csv.write(line)
-
-csv.close()
-
-source.close()
-os.unlink(filename[:-2]+"tmp")
