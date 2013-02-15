@@ -12,7 +12,7 @@ Twitter offers the possibility to download your whole tweet archive. It comes wi
 
 
 #### 15.02.2013 ####
-double quotes problem solved, only when tweet contains \n the double quotes are not removed
+double quotes problem solved
 
 #### 14.02.2013 ####
 This is only a quick and dirty script. There are also some problems with multiple " which are encoded extra I guess. For me it works, feel free to do whatever you want.
