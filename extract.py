@@ -7,13 +7,17 @@ def find_nth(haystack, needle, n):
         n -= 1
     return start
 
+# get the filename from the arguments
 filename = sys.argv[1]
 
+
+# open the file and skip first line to get correct json entry point, due to special twitter format of the js file
 input = open(filename)
 input.readline()
 data = json.load(input)
 input.close()
 
+# create a temporary output file 
 out = open(filename[:-2]+"tmp","wb")
 
 output = unicodecsv.writer(out, encoding='utf-8')
@@ -21,7 +25,7 @@ output = unicodecsv.writer(out, encoding='utf-8')
 output.writerow(["id"]+["timestamp"]+["tweet"])  # header row
 
 for row in data:
-	output.writerow([row["id"],row["created_at"],row["text"]])
+	output.writerow([row["id"],row["created_at"],row["text"].replace("\n"," ")])
 out.close()
 
 source = open(filename[:-2]+"tmp","r")
@@ -29,7 +33,6 @@ csv = open(filename[:-2]+"csv","wb")
 
 for line in source:
 	pos = find_nth(line, ",",2)
-	print pos
 	tweet = line[pos+1:-2]
 	tweet = tweet.replace('""','"')
 	if "\n" in tweet:
@@ -38,9 +41,7 @@ for line in source:
 		tweet = tweet[1:-1]
 	line = line[:pos+1] + tweet + "\r\n"
 	csv.write(line)
-	
 
-	
 csv.close()
 
 source.close()
