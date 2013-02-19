@@ -23,6 +23,9 @@ where $1 is the path to a directory containing the js files (I don't check anyth
 
 ### Updates ###
 
+##### 19.02.2013 #####
+Polishing, more columns added to the CSV output
+
 ##### 15.02.2013 #####
 script now creates valid csv format (at least no problems with R while reading the file)
 
